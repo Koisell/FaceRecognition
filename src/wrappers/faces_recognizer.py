@@ -6,7 +6,7 @@ from cv2 import imshow, waitKey, destroyAllWindows, VideoCapture, cvtColor, rect
 from cv2 import COLOR_RGB2GRAY
 import numpy as np
 from csv import reader as csvreader
-from detect_face import FaceDetector
+from wrappers.detect_face import FaceDetector
 
 
 class ParserExecption(ValueError):
