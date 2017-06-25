@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
 # coding: utf-8
 # script based on http://docs.opencv.org/2.4/modules/contrib/doc/facerec/tutorial/facerec_video_recognition.html
-
-import sys
+from sys import exit, stderr, argv
 import os.path
 from re import match
 # This is a tiny script to help you creating a CSV file from a face
 # database with a similar hierarchie:
 #
-#  philipp@mango:~/facerec/data/at$ tree
+#  koisell@fedora:~/faces/
 #  .
 #  |-- README
+#  |-- s-1_bob
 #  |-- s1
-#  |   |-- 1.pgm
+#  |   |-- 1.png
 #  |   |-- ...
-#  |   |-- 10.pgm
-#  |-- s2
-#  |   |-- 1.pgm
+#  |   |-- 10.jpg
+#  |-- s2_alice
+#  |   |-- 1.png
 #  |   |-- ...
 #  |   |-- 10.pgm
 #  ...
@@ -24,15 +24,17 @@ from re import match
 #  |   |-- 1.pgm
 #  |   |-- ...
 #  |   |-- 10.pgm
-#
+# This script match directories named s(integer)AnythingYouWant
+# integer will be the class associated with pictures found in the directory.
+# Your picture must be followed by the extension png, jpg, pgm or jpeg (not case sensitive)
 
 if __name__ == "__main__":
 
-    if len(sys.argv) != 2:
-        print("usage: create_csv <base_path>")
-        sys.exit(1)
+    if len(argv) != 2:
+        print("usage: create_csv <base_path> > file.csv")
+        exit(1)
 
-    BASE_PATH = sys.argv[1]
+    BASE_PATH = argv[1]
     SEPARATOR = "|"
 
     label = 0
