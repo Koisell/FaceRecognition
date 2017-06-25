@@ -1,5 +1,3 @@
-from detect_face import FaceDetector
-from faces_recognizer import Recognizer
 from sys import argv, exit, stderr
 import cv2
 from cv2.face import createLBPHFaceRecognizer
@@ -7,6 +5,8 @@ from cv2 import imshow, waitKey, destroyAllWindows, VideoCapture, cvtColor, rect
 from cv2 import COLOR_BGR2GRAY
 import numpy as np
 from csv import reader as csvreader
+from wrappers.detect_face import FaceDetector
+from wrappers.faces_recognizer import Recognizer, get_dataset_csv
 
 
 def main():
@@ -27,7 +27,7 @@ def main():
     if recognizer_file.endswith("xml"):
         recognizer.set_recognizer_xml(recognizer_file)
     elif recognizer_file.endswith("csv"):
-        recognizer.train(*recognizer.get_dataset_csv(recognizer_file, casc_path, min_face_dim=(100, 100)))
+        recognizer.train(*get_dataset_csv(recognizer_file, casc_path, min_face_dim=(100, 100)))
     else:
         print("Your file do not match a valid type", file=stderr)
         exit(1)
@@ -43,6 +43,9 @@ def main():
         nbr_predicted = recognizer.predict(gray[y: y + h, x: x + w])
         if nbr_predicted is not None:
             nb = nbr_predicted[0]
+            txt = "Subject #{}".format(nb)
+            cv2.putText(img, txt, (x, y - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 0, 255), 2)
 
     # Display the resulting frame
     cv2.imshow('Picture', img)

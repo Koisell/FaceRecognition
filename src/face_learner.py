@@ -3,7 +3,7 @@
 # This script allow you to learn a dataset, that you provide through a csv (see create_csv.py) and create a OpenCV xml file.
 # Usage: python3 face_learner.py [path/to/detection/xml/haarcascade.xml] <path/to/csv/file.csv> <your_new_recognizer.xml>
 from cv2.face import createLBPHFaceRecognizer  # can be change but dont forget to change into face_recognizer
-from wrappers.faces_recognizer import Recognizer
+from wrappers.faces_recognizer import Recognizer, get_dataset_csv
 from sys import exit, argv, stderr
 
 
@@ -21,7 +21,7 @@ def main():
         print("Usage: python3 face_learner.py [path/to/detection/xml/haarcascade.xml] <path/to/csv/file.csv> <your_new_recognizer.xml>", file=stderr)
 
     recognizer = Recognizer(createLBPHFaceRecognizer)
-    recognizer.train(*recognizer.get_dataset_csv(csv_file, casc_path))
+    recognizer.train(*get_dataset_csv(csv_file, casc_path))
     recognizer.save_recognizer(ouput_xml)
 
 
