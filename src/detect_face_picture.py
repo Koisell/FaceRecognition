@@ -1,7 +1,10 @@
-from detect_face import FaceDetector
 from sys import argv, exit, stderr
-from PIL import Image
-import cv2
+from cv2 import imread, cvtColor, COLOR_RGB2GRAY, rectangle, imshow, waitKey, destroyAllWindows
+# from cv2 import imwrite
+from wrappers.detect_face import FaceDetector
+# This script allow you to detect a face based on OpenCV xml haarcascade file.
+# You must need to change min_face_dim in the FaceDetector constructor.
+# Usage: python3 detect_face_picture.py [path to recognizer.xml] <path to picture>
 
 
 def main():
@@ -18,19 +21,19 @@ def main():
 
     detector = FaceDetector(casc_path, min_face_dim=(100, 100))
 
-    img = cv2.imread(picture)
-    gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    img = imread(picture)
+    gray = cvtColor(img, COLOR_RGB2GRAY)
     detections = detector.detect(gray)
 
     for (x, y, w, h) in detections:
-        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
     # Display the resulting frame
-    cv2.imshow('Picture', img)
+    imshow('Picture', img)
 
-    #cv2.imwrite("detect.png", img)
-    cv2.waitKey(0) & 0xFF == ord('q')
-    cv2.destroyAllWindows()
+    # cv2.imwrite("detect.png", img)
+    waitKey(0) & 0xFF == ord('q')
+    destroyAllWindows()
 
 
 if __name__ == '__main__':

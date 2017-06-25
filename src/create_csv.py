@@ -31,7 +31,7 @@ from re import match
 if __name__ == "__main__":
 
     if len(argv) != 2:
-        print("usage: create_csv <base_path> > file.csv")
+        print("Usage: create_csv <base_path> > file.csv", file=stderr)
         exit(1)
 
     BASE_PATH = argv[1]
