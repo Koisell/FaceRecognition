@@ -28,11 +28,11 @@ class FaceDetector():
 
 def main():
     if len(sys.argv) > 1:
-        cascPath = sys.argv[1]
+        casc_path = sys.argv[1]
     else:
-        cascPath = "/usr/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml"  # Path on fedora 25
+        casc_path = "/usr/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml"  # Path on fedora 25
 
-    faceCascade = cv2.CascadeClassifier(cascPath)
+    face_cascade = cv2.CascadeClassifier(casc_path)
 
     video_capture = cv2.VideoCapture(0)
     min_face_dim = (50, 50)
@@ -43,7 +43,7 @@ def main():
 
         gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 
-        faces = faceCascade.detectMultiScale(
+        faces = face_cascade.detectMultiScale(
             gray,
             scaleFactor=1.1,
             minNeighbors=5,
