@@ -1,0 +1,19 @@
+dist: trusty
+language: python
+
+addons:
+  sonarqube:
+    organization: "koisell-github" # the key of the org you chose at step #3
+
+python:
+  - "3.5"
+  - "3.6"
+
+
+script:
+  - sonar-scanner
+# command to run tests
+# script: pytest
+
+notifications:
+  email: false
