@@ -1,5 +1,5 @@
 from argparse import ArgumentParser
-from sys import stderr
+from sys import stderr, exit
 import cv2
 from cv2.face import LBPHFaceRecognizer_create
 from cv2 import imshow, waitKey, destroyAllWindows, VideoCapture, cvtColor, rectangle
