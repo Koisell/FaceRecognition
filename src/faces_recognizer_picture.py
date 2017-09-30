@@ -1,6 +1,6 @@
 from sys import argv, exit, stderr
 import cv2
-from cv2.face import createLBPHFaceRecognizer
+from cv2.face import LBPHFaceRecognizer_create
 from cv2 import imshow, waitKey, destroyAllWindows, VideoCapture, cvtColor, rectangle
 from cv2 import COLOR_BGR2GRAY
 import numpy as np
@@ -23,7 +23,7 @@ def main():
         print("Usage: python3 detect_face_picture.py [path to recognizer.xml] <path to csv|path to xml> <path to picture>", file=stderr)
         exit(1)
 
-    recognizer = Recognizer(createLBPHFaceRecognizer)
+    recognizer = Recognizer(LBPHFaceRecognizer_create)
     if recognizer_file.endswith("xml"):
         recognizer.set_recognizer_xml(recognizer_file)
     elif recognizer_file.endswith("csv"):

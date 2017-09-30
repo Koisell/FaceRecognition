@@ -8,7 +8,7 @@ This repository provides wrappers and useful scripts to perform face detection a
 ## Requirement
 This repository has been tested with the following dependencies installed:
 * Python=v3.5.1
-* OpenCV=v3.2.0
+* OpenCV=v3.3.0
 * Numpy=v1.11.1
 
 You must have the opencv-contrib module installed.

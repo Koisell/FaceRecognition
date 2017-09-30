@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
-from sys import stderr
-from cv2.face import createLBPHFaceRecognizer
+from sys import stderr, argv
+from cv2.face import LBPHFaceRecognizer_create
 from cv2 import imshow, waitKey, destroyAllWindows, VideoCapture, cvtColor, rectangle, imread
 from cv2 import COLOR_RGB2GRAY
 import numpy as np
@@ -26,7 +26,7 @@ class Recognizer():
         raise NotImplementedError()
 
     def set_recognizer_xml(self, xmlfile):
-        self.recognizer.load(xmlfile)
+        self.recognizer.read(xmlfile)
 
     def train(self, pictures, labels):
         self.recognizer.train(pictures, np.array(labels))
@@ -41,7 +41,7 @@ class Recognizer():
         return self.recognizer.predict(frame)
 
     def save_recognizer(self, filename):
-        self.recognizer.save(filename)
+        self.recognizer.write(filename)
 
 
 def get_dataset_csv(csv_to_path, casc_path, min_face_dim=(200, 200)):
@@ -70,10 +70,13 @@ def get_dataset_csv(csv_to_path, casc_path, min_face_dim=(200, 200)):
 
 
 def main():
-    casc_path = "/usr/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml"  # Path on fedora 25
-    recognizer = Recognizer(createLBPHFaceRecognizer)
-    recognizer.train(*get_dataset_csv("faces_dataset.csv", casc_path))
-    #recognizer.set_recognizer_xml("faces.xml")
+    if len(argv) > 1:
+        casc_path = argv[1]
+    else:
+        casc_path = "/usr/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml"  # Path on fedora 25
+    recognizer = Recognizer(LBPHFaceRecognizer_create)
+    #recognizer.train(*get_dataset_csv("faces_dataset.csv", casc_path))
+    recognizer.set_recognizer_xml("faces.xml")
     video_capture = VideoCapture(0)
     face_detector = FaceDetector(casc_path, min_face_dim=(100, 100))
     # recognizer.save_recognizer("faces.xml")
