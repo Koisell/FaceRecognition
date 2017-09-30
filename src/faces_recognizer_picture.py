@@ -1,4 +1,5 @@
-from sys import argv, exit, stderr
+from argparse import ArgumentParser
+from sys import stderr
 import cv2
 from cv2.face import LBPHFaceRecognizer_create
 from cv2 import imshow, waitKey, destroyAllWindows, VideoCapture, cvtColor, rectangle
@@ -7,21 +8,19 @@ import numpy as np
 from csv import reader as csvreader
 from wrappers.detect_face import FaceDetector
 from wrappers.faces_recognizer import Recognizer, get_dataset_csv
+# This script allow you to recognize a face based on a xml file (see face_learner.py) or a csv (see create_csv.py)
+
+
+default_casc_path = "/usr/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml"  # Path on fedora 25
 
 
 def main():
-    if len(argv) == 3:
-        casc_path = "/usr/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml"  # Path on fedora 25
-        recognizer_file = argv[1]
-        picture = argv[2]
-    elif len(argv) == 4:
-        casc_path = argv[1]
-        recognizer_file = argv[2]
-        picture = argv[3]
-    else:
-        print("You must provide a picture", file=stderr)
-        print("Usage: python3 detect_face_picture.py [path to recognizer.xml] <path to csv|path to xml> <path to picture>", file=stderr)
-        exit(1)
+    parser = ArgumentParser(description="This script allow you to recognize a face based on a xml file (see face_learner.py) or a csv (see create_csv.py)")
+    parser.add_argument("-haar", "--haarcascade-path", default=default_casc_path, dest="casc_path", help="Path to the haarcascade file you want to use.")
+    parser.add_argument("-r", "--recognizer_file", required=True, dest="recognizer_file", help="Recognizer file in format csv or xml")
+    parser.add_argument("-p", "--picture", required=True, dest="picture", help="Picture in which you look for faces")
+    args = parser.parse_args()
+    casc_path, recognizer_file, picture = args.casc_path, args.recognizer_file, args.picture
 
     recognizer = Recognizer(LBPHFaceRecognizer_create)
     if recognizer_file.endswith("xml"):

@@ -1,23 +1,20 @@
-from sys import argv, exit, stderr
+from argparse import ArgumentParser
 from cv2 import imread, cvtColor, COLOR_RGB2GRAY, rectangle, imshow, waitKey, destroyAllWindows
 # from cv2 import imwrite
 from wrappers.detect_face import FaceDetector
 # This script allow you to detect a face based on OpenCV xml haarcascade file.
 # You must need to change min_face_dim in the FaceDetector constructor.
-# Usage: python3 detect_face_picture.py [path to recognizer.xml] <path to picture>
+
+default_casc_path = "/usr/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml"  # Path on fedora 25
 
 
 def main():
-    if len(argv) == 2:
-        casc_path = "/usr/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml"  # Path on fedora 25
-        picture = argv[1]
-    elif len(argv) == 3:
-        casc_path = argv[1]
-        picture = argv[2]
-    else:
-        print("You must provide a picture", file=stderr)
-        print("Usage: python3 detect_face_picture.py [path to recognizer.xml] <path to picture>", file=stderr)
-        exit(1)
+    parser = ArgumentParser(description="This script allow you to detect a face based on OpenCV xml haarcascade file.\
+     You must need to change min_face_dim in the FaceDetector constructor.")
+    parser.add_argument("-haar", "--haarcascade-path", default=default_casc_path, dest="casc_path", help="Path to the haarcascade file you want to use.")
+    parser.add_argument("-p", "--picture", required=True, dest="picture", help="Picture in which you look for faces")
+    args = parser.parse_args()
+    casc_path, picture = args.casc_path, args.picture
 
     detector = FaceDetector(casc_path, min_face_dim=(100, 100))
 
